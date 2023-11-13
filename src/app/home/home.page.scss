@@ -1,0 +1,9 @@
+/* Estilo básico para la imagen */
+.qr-fino{
+  border-radius: 40px;
+  width: 250px; /* Ancho deseado */
+  height: auto; 
+  display: block; /* Asegura que la imagen se comporte como un bloque */
+  margin-left: auto;
+  margin-right: auto;
+}

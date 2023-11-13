@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="warning" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title >registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card-header>
+    <ion-card-title >Registro</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <form [formGroup]="formularioRegistro" (keyup.enter)="guardar()">
+      <ion-item>
+        <ion-label  position="floating">Nombre</ion-label>
+        <ion-input formControlName="nombre"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label  position="floating">Apellido</ion-label>
+        <ion-input formControlName="apellido"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label  position="floating">Rut</ion-label>
+        <ion-input formControlName="rut"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label  position="floating">Carrera</ion-label>
+        <ion-input formControlName="carrera"></ion-input>
+      </ion-item>
+      <br>
+
+
+
+      <ion-item>
+        <ion-label  position="floating">Nombre de usuario</ion-label>
+        <ion-input formControlName="nombreLogin"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label  position="floating">Contraseña</ion-label>
+        <ion-input formControlName="password" type="password" pattern="[0-9]{4}"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label  position="floating">Confirmar contraseña</ion-label>
+        <ion-input formControlName="confirmacionPassword" type="password"></ion-input>
+      </ion-item>
+      <br>
+      
+      <ion-button (click)="guardar()" color="warning">Registrarse</ion-button>
+    </form>
+  </ion-card-content>
+  <ion-card> 
+      
+
+    <ion-list>
+      <ion-item>
+        <ion-select (ionChange)="cargarComuna()" placeholder="Seleccione region" [(ngModel)]="regionSeleccionado">
+          <ion-select-option [value]="i.id" *ngFor="let i of regiones">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-item>
+        <ion-select placeholder="Seleccione comuna" [(ngModel)]="comunaSeleccionada">
+          <ion-select-option [value]="i.id" *ngFor="let i of comunas">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    
+  
+</ion-card>
+</ion-content>

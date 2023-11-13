@@ -1,0 +1,16 @@
+<ion-buttons slot="start">
+  <ion-back-button color="warning" defaultHref="/"></ion-back-button>
+</ion-buttons>
+<ion-content [fullscreen]="true" class="login-page">
+  <div class="qr-container">
+    <div class="message">
+      Escanea el código QR
+    </div>
+    <div class="centered-content">
+      <zxing-scanner #scanner start="true" [device]="currentDevice || undefined" (scanSuccess)="handleQrCodeResult($event)" [formats]="formats" class="qr-scanner">
+          <div class="qr-frame"></div>
+        </zxing-scanner>
+      </div>
+    </div>
+    <img src="assets/icon/lagrimas.gif "class="qr-fino" >
+</ion-content>
