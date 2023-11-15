@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './services/auth.guard';
+//import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
 
@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard]
   },
   {
     path: 'recuperar-password',
@@ -29,7 +29,7 @@ const routes: Routes = [
   {
     path: 'info',
     loadChildren: () => import('./info/info.module').then( m => m.InfoPageModule),
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard]
   },
   {
     path: 'error',

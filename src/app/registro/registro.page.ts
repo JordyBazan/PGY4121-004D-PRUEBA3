@@ -16,26 +16,23 @@ import { Preferences } from '@capacitor/preferences';
 
 export class RegistroPage implements OnInit {
   formularioRegistro: FormGroup;
-  
+
   regiones:Region[]=[];
   comunas:Comuna[]=[];
   regionSeleccionado:number = 0;
   comunaSeleccionada:number = 0;
-  passwordMatchValidator: any;
 
-  redirectToLogin() {
-    this.router.navigate(['/login']);
-  }
-  constructor(private locationService: LocationService, public fb: FormBuilder, public alertController: AlertController, private router: Router,) { 
+
+  constructor(private locationService: LocationService, public fb: FormBuilder, public alertController: AlertController) { 
     this.formularioRegistro = this.fb.group({
-      'nombre':   new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern(/^[a-zA-Z0]*$/)]),
-      'apellido': new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0]*$/)]),
-      'rut':      new FormControl("", [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d{7,8}-[0-9kK]$/)]),
-      'carrera':  new FormControl("", [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern(/^[a-zA-Z0]*$/)]),
-      'nombreLogin':   new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern(/^[a-zA-Z0]*$/)]),
-      'password': new FormControl("", [Validators.required, Validators.pattern(/^\d{4}$/), Validators.minLength(4), Validators.maxLength(4)]),
+      'nombre':   new FormControl("",Validators.required),
+      'apellido': new FormControl("",Validators.required),
+      'rut':      new FormControl("",Validators.required),
+      'carrera':  new FormControl("",Validators.required),
+      'nombreLogin':   new FormControl("",Validators.required),
+      'password': new FormControl("",Validators.required),
       'confirmacionPassword': new FormControl("",Validators.required)
-    },{ validators: this.passwordMatchValidator });;
+    });
 
   }
 
@@ -108,19 +105,6 @@ export class RegistroPage implements OnInit {
       buttons: ['OK']
     });
     await successAlert.present();
-
-
-    buttons: [
-      {
-        text: 'Aceptar',
-        handler: () => {
-          this.router.navigate(['/login']);
-        }
-      }
-    ]
-
-
-
   }
 
 }
