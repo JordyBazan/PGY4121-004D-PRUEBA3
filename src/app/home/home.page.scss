@@ -1,0 +1,33 @@
+
+ion-content.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.scanner-container {
+  text-align: center;
+}
+
+.centered-content {
+  position: relative;
+  display: inline-block;
+}
+
+.qr-scanner {
+  width: 100%; /* O ajusta el ancho según tus necesidades */
+  max-width: 400px; /* Ajusta el ancho máximo según tus necesidades */
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.qr-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid #fff; /* Ajusta el grosor y color del borde según tus necesidades */
+}

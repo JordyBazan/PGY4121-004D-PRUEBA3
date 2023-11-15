@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning"> <!-- Cambia el color de la barra a "primary" -->
+    <h1 #tittle>Lector QR</h1>
+    <ion-label>Bienvenido, {{ nombreUsuario }}</ion-label>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" class="login-page">
+  <div class="scanner-container">
+    <div class="message">
+      Escanea el código QR
+    </div>
+    <div class="centered-content">
+      <zxing-scanner #scanner start="true" [device]="currentDevice || undefined" (scanSuccess)="handleQrCodeResult($event)" [formats]="formats" class="qr-scanner">
+          <div class="qr-frame"></div>
+        </zxing-scanner>
+      </div>
+    </div>
+    
+</ion-content>
