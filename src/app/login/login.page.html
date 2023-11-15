@@ -19,9 +19,11 @@
           </ion-item>
 
           <ion-item class="login-input">
-            <ion-label position="floating" class="input-label">Contraseña</ion-label>
-            <ion-input formControlName="password" type="password" class="input-field" ></ion-input>
-          </ion-item>
+          <ion-label position="floating" class="input-label">Contraseña</ion-label>
+          <ion-input formControlName="password" [type]="showPassword ? 'text' : 'password'" class="input-field"></ion-input>
+          <ion-icon name="eye" slot="end" class="ver-contrasena" (click)="togglePasswordVisibility()"></ion-icon>
+        </ion-item>
+
 
         </form>
 
@@ -33,7 +35,7 @@
       <p [routerLink]="['/recuperar-password']" class="forgot-password-link">¿Olvidaste tu contraseña?</p>
     </ion-card>
   </div>
-  <img src="assets/icon/qr.png" class="img-login">
+  <img #title src="assets/icon/qr.png" class="img-login">
 </ion-content>
 <ion-footer>
   <ion-card>

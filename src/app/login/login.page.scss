@@ -6,3 +6,22 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* Contenedor principal para el ícono y el campo de entrada */
+.login-input {
+    position: relative;
+}
+
+/* Campo de entrada de contraseña */
+.input-field {
+    padding-right: 30px; /* Ajusta el espacio a la derecha para dar lugar al ícono */
+}
+
+/* Ícono de mostrar contraseña */
+.ver-contrasena {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    cursor: pointer; /* Agrega un puntero al pasar el ratón para indicar que es interactivo */
+}
