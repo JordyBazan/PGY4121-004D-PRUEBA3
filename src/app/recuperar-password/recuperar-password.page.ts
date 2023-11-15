@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Preferences } from '@capacitor/preferences';
 import { NavController, AlertController } from '@ionic/angular';
 
 @Component({
@@ -7,57 +8,96 @@ import { NavController, AlertController } from '@ionic/angular';
   styleUrls: ['./recuperar-password.page.scss'],
 })
 export class RecuperarPasswordPage {
-  usuario: string = '';
-  usuariosGuardados: any[] = [];
-  usuarioEncontrado: boolean = false; // Variable para controlar la visibilidad del GIF
+  usuarios: any[] = [];
+  rutInput: string = '';
+  nombreUsuarioInput: string = '';
+  resultadoContrasena: string = '';
 
-  constructor(
-    private navCtrl: NavController,
-    private alertController: AlertController
-  ) {}
+  nuevaContrasena: string = ''; // Declarar nuevaContrasena
+  nombreUsuarioActual: string = '';
+  contrasenaActual: string = '';
+  constructor(private alertController: AlertController) {}
 
-  ionViewWillEnter() {
-    // Obtener la lista de usuarios existente o inicializar si no existe
-    this.usuariosGuardados = JSON.parse(
-      localStorage.getItem('usuarios') || '[]'
-    );
-  }
-
-  recuperarPassword() {
-    const usuarioEncontrado = this.usuariosGuardados.find(
-      (user) => user.nombreLogin === this.usuario
-    );
-
-    if (usuarioEncontrado) {
-      const password = usuarioEncontrado.password;
-      this.usuarioEncontrado = true; // Mostrar el GIF
-      this.mostrarPassword(password);
-    } else {
-      this.mostrarAlerta('Usuario no encontrado', 'El usuario no existe.');
+  async ngOnInit() {
+    // Obtener la lista de usuarios desde las preferencias
+    const usuariosPreferences = await Preferences.get({ key: 'usuarios' });
+    if (usuariosPreferences && usuariosPreferences.value) {
+      this.usuarios = JSON.parse(usuariosPreferences.value);
     }
   }
 
-  async mostrarPassword(password: string) {
-    const alert = await this.alertController.create({
-      header: 'Contraseña encontrada',
-      message: `La contraseña es: ${password}`,
-      buttons: ['OK'],
-    });
+  async buscarContrasena() {
+    if (this.nombreUsuarioInput.trim() === '' || this.rutInput.trim() === '') {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Por favor, complete todos los campos correctamente.',
+        buttons: ['Aceptar']
+      });
+      await alert.present();
+    } else {
+      const usuarioEncontrado = this.usuarios.find(nombreLogin => nombreLogin.nombreLogin === this.nombreUsuarioInput && nombreLogin.rut === this.rutInput);
 
-    await alert.present();
+      if (usuarioEncontrado) {
+        this.resultadoContrasena = usuarioEncontrado.password;
+
+        // Muestra una alerta con la contraseña
+        const alert = await this.alertController.create({
+          header: 'Contraseña Encontrada',
+          message: 'La contraseña es: ' + this.resultadoContrasena,
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'Nombre de usuario o RUT no encontrado',
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+      }
+    }
   }
 
-  async mostrarAlerta(header: string, mensaje: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: mensaje,
-      buttons: ['OK'],
-    });
+  async cambiarContrasena() {
+    // Obtén el objeto de usuarios desde las preferencias
+    const usuariosPreferences = await Preferences.get({ key: 'usuarios' });
 
-    await alert.present();
-  }
+    if (usuariosPreferences && usuariosPreferences.value) {
+      const usuarios = JSON.parse(usuariosPreferences.value);
 
-  volver() {
-    this.navCtrl.navigateBack('/'); // Cambia la ruta según tu configuración
+      // Busca el usuario actual
+      const usuarioActual = usuarios.find(
+        (nombreLogin: { nombreLogin: string; password: string }) =>
+          nombreLogin.nombreLogin === this.nombreUsuarioActual && nombreLogin.password === this.contrasenaActual
+      );
+
+      if (usuarioActual) {
+        // La contraseña actual coincide, puedes proceder a cambiarla
+        usuarioActual.password = this.nuevaContrasena;
+
+        // Actualiza el objeto de usuarios en las preferencias
+        await Preferences.set({
+          key: 'usuarios',
+          value: JSON.stringify(usuarios),
+        });
+
+        const successAlert = await this.alertController.create({
+          header: 'Contraseña Cambiada',
+          message: 'La contraseña se ha cambiado con éxito.',
+          buttons: ['Aceptar'],
+        });
+        await successAlert.present();
+      } else {
+        const errorAlert = await this.alertController.create({
+          header: 'Error',
+          message: 'Nombre de usuario o contraseña incorrectos.',
+          buttons: ['Aceptar'],
+        });
+        await errorAlert.present();
+      }
+    } else {
+      //nose
+    }
   }
 }
+

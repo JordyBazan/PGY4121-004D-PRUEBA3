@@ -31,7 +31,7 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/preferences": "^5.0.6",
     "@capacitor/status-bar": "5.0.6",
-    "@ionic/angular": "^7.5.4",
+    "@ionic/angular": "^7.0.0",
     "@ionic/pwa-elements": "^3.2.2",
     "@zxing/ngx-scanner": "^16.0.1",
     "ionicons": "^7.0.0",
