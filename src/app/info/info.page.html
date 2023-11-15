@@ -1,7 +1,7 @@
 <ion-header [translucent]="true" class="custom-header">
-  <ion-toolbar class="custom-toolbar"> <!-- Agrega la clase "custom-toolbar" aquí -->
+  <ion-toolbar class="custom-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button class="custom-back-button"></ion-back-button> <!-- Agrega la clase "custom-back-button" aquí -->
+      <ion-back-button class="custom-back-button"></ion-back-button>
       <ion-title class="app-title">Registro Clase</ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
@@ -12,8 +12,8 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
+  <!-- Sección de Cámara -->
   <ion-card class="custom-card">
     <ion-card-header class="custom-card-header">
       <ion-title class="custom-card-title">Cámara</ion-title>
@@ -23,10 +23,12 @@
         Tomar Foto
       </ion-button>
       <div *ngIf="imageSrc" class="foto-capturada">
+        <img [src]="imageSrc" alt="Imagen Capturada">
       </div>
     </ion-card-content>
   </ion-card>
 
+  <!-- Sección de Datos de Clase -->
   <ion-card class="custom-card">
     <ion-card-header class="custom-card-header">
       <ion-title class="custom-card-title">Datos Clase</ion-title>
@@ -36,8 +38,8 @@
         <ion-item>
           <p [innerHTML]="mensajeDesdePreferences"></p>
         </ion-item>
-        <ion-item>
-          <p *ngIf="latitude !== undefined && longitude !== undefined">
+        <ion-item *ngIf="latitude !== undefined && longitude !== undefined">
+          <p>
             Latitud: {{ latitude }}, Longitud: {{ longitude }}
           </p>
         </ion-item>
@@ -45,21 +47,33 @@
     </ion-card-content>
   </ion-card>
 
+  <!-- Sección de Alumno -->
   <ion-card class="custom-card">
     <ion-card-header class="custom-card-header">
       <ion-title class="custom-card-title">Alumno</ion-title>
     </ion-card-header>
     <ion-card-content class="custom-card-content">
       <ion-list class="custom-list">
-        <ion-item *ngFor="let usuario of usuarios">
-          <ion-label>
-            <strong>RUT:</strong> {{ usuario.rut }} <br>
-            <strong>Nombre:</strong> {{ usuario.nombre }} <br>
-            <strong>Apellido:</strong> {{ usuario.apellido }} <br>
-            <strong>Usuario:</strong> {{ usuario.nombreLogin }} <br>
-            <strong>Carrera:</strong> {{ usuario.carrera }} <br>
-            
-            
+        <ion-item *ngIf="usuarioSesion">
+          <ion-label class="custom-label">
+            RUT: {{ usuarioSesion.rut }} <br>
+            Nombre: {{ usuarioSesion.nombre }} <br>
+            Apellido: {{ usuarioSesion.apellido }} <br>
+            Usuario: {{ usuarioSesion.nombreLogin }} <br>
+            Carrera: {{ usuarioSesion.carrera }} <br>
+
+            <!-- Utiliza *ngIf para mostrar datos condicionales -->
+            <ng-container *ngIf="usuarioSesion.region">
+              Región: {{ usuarioSesion.region.nombre }}<br>
+            </ng-container>
+
+            <ng-container *ngIf="usuarioSesion.comuna">
+              Comuna: {{ usuarioSesion.comuna.nombre }}<br>
+            </ng-container>
+
+            <ng-container *ngIf="horaDesdePreferences">
+              Hora: {{ horaDesdePreferences }}<br>
+            </ng-container>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -68,41 +82,7 @@
 
 </ion-content>
 
-
-
-
-
-
-
-
-
-  <!-- <ion-card>
-    <ion-card-header>
-      <ion-title>Alumno</ion-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let usuario of usuarios">
-          <ion-label>
-            <strong>RUT:</strong> {{ usuario.rut }} <br>
-            <strong>Nombre:</strong> {{ usuario.nombre }} <br>
-            <strong>Apellido:</strong> {{ usuario.apellido }} <br>
-            <strong>Usuario:</strong> {{ usuario.usuario }} <br>
-            <strong>Carrera:</strong> {{ usuario.carrera }} <br>
-            
-             Muestra la región si está presente 
-            <ng-container *ngIf="usuario.region">
-              <strong>Región:</strong> {{ usuario.region.nombre }}<br>
-            </ng-container>
-        
-             Muestra la comuna si está presente 
-            <ng-container *ngIf="usuario.comuna">
-              <strong>Comuna:</strong> {{ usuario.comuna.nombre }}<br>
-            </ng-container>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-</ion-content> -->
+<!-- Botón para registrar la clase -->
+<ion-button expand="full" (click)="registrarClase()" class="custom-button">
+  Registrar Clase
+</ion-button>

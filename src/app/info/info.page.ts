@@ -17,7 +17,12 @@ export class InfoPage implements OnInit {
   horaDesdePreferences: string | null = '';
   usuarios: any[] = [];
 
+
+
   imageSrc: string = '';
+  fotoTomada: boolean = false; // Variable para verificar si se ha tomado una foto
+
+
   usuarioSesion: any; // Para almacenar los datos del usuario que ha iniciado sesión
   constructor(private router: Router,private alertController: AlertController) { }
 
@@ -26,7 +31,12 @@ export class InfoPage implements OnInit {
     this.retrieveMessageFromPreferences();
     this.retrieveUsuariosFromPreferences();
     this.retrieveHoraFromPreferences();
+
+    this.ionViewWillEnter(); // Agrega esta línea
     this.retrieveUsuarioSesion(); // Agrega esta línea
+
+    this.retrieveUsuarioSesion(); // Agrega esta línea
+
 
   }
 
@@ -35,10 +45,30 @@ export class InfoPage implements OnInit {
       const coordinates: GeolocationPosition = await Geolocation.getCurrentPosition();
       this.latitude = coordinates.coords.latitude;
       this.longitude = coordinates.coords.longitude;
+
+
+
+      // Llama a la función para guardar las coordenadas en las preferencias
+      this.guardarLatitudLongitud();
+
     } catch (error) {
       console.error('Error al obtener la posición actual:', error);
     }
   }
+
+
+  async guardarLatitudLongitud() {
+    if (this.latitude !== undefined && this.longitude !== undefined) {
+      try {
+        // Guarda la latitud y longitud en las preferencias
+        await Preferences.set({ key: 'latitud', value: this.latitude.toString() });
+        await Preferences.set({ key: 'longitud', value: this.longitude.toString() });
+      } catch (error) {
+        console.error('Error al guardar latitud y longitud en las preferencias:', error);
+      }
+    }
+  }
+
 
   async abrirCamara() {
     try {
@@ -48,7 +78,14 @@ export class InfoPage implements OnInit {
         resultType: CameraResultType.Uri,
       });
 
-      
+
+      if (image && image.webPath) {
+        this.imageSrc = image.webPath;
+        this.fotoTomada = true; // Marca la foto como tomada
+      } else {
+        console.log('No se capturó ninguna imagen o la imagen es nula.');
+      }
+
     } catch (error) {
       console.error('Error al abrir la cámara:', error);
     }
@@ -77,13 +114,18 @@ export class InfoPage implements OnInit {
     }
   }
 
+
+  async ionViewWillEnter() {
+
   
 
 
 
+  }
 
 
   async retrieveUsuarioSesion() {
+
     try {
       const usuarioJSON = await Preferences.get({ key: 'usuario' });
       if (usuarioJSON && usuarioJSON.value) {
@@ -93,9 +135,6 @@ export class InfoPage implements OnInit {
       console.error('Error al recuperar el usuario de la sesión desde Preferences:', error);
     }
   }
-
-  
-
 
 
 
@@ -111,6 +150,32 @@ export class InfoPage implements OnInit {
     }
   }
 
+
+  async registrarClase() {
+    if (this.fotoTomada) {
+      
+      const alert = await this.alertController.create({
+        header: 'Registro exitoso',
+        message: 'La clase ha sido registrada correctamente.',
+        buttons: ['Aceptar']
+      });
+
+      await alert.present();
+    } else {
+      // Muestra una alerta si no se ha tomado una foto
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Debes tomar una foto antes de registrar la clase.',
+        buttons: ['Aceptar']
+      });
+
+      await alert.present();
+    }
+  }
+  
+
+
+
   agregarSaltosDeLinea(mensaje: string) {
     return mensaje.replace(/,/g, '<br>');
   }
@@ -125,9 +190,13 @@ export class InfoPage implements OnInit {
     await Preferences.remove({ key: 'hora' });
     await Preferences.remove({ key: 'claseActual' });
 
+    await Preferences.remove({ key: 'latitud' });
+    await Preferences.remove({ key: 'longitud' });
 
-  
+
     console.log('Sesión cerrada');
     this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión
   }
+  
 }
+
