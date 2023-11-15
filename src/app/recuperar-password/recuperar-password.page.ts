@@ -13,7 +13,9 @@ export class RecuperarPasswordPage {
   nombreUsuarioInput: string = '';
   resultadoContrasena: string = '';
 
-
+  nuevaContrasena: string = ''; // Declarar nuevaContrasena
+  nombreUsuarioActual: string = '';
+  contrasenaActual: string = '';
   constructor(private alertController: AlertController) {}
 
   async ngOnInit() {
@@ -53,6 +55,48 @@ export class RecuperarPasswordPage {
         });
         await alert.present();
       }
+    }
+  }
+
+  async cambiarContrasena() {
+    // Obtén el objeto de usuarios desde las preferencias
+    const usuariosPreferences = await Preferences.get({ key: 'usuarios' });
+
+    if (usuariosPreferences && usuariosPreferences.value) {
+      const usuarios = JSON.parse(usuariosPreferences.value);
+
+      // Busca el usuario actual
+      const usuarioActual = usuarios.find(
+        (nombreLogin: { nombreLogin: string; password: string }) =>
+          nombreLogin.nombreLogin === this.nombreUsuarioActual && nombreLogin.password === this.contrasenaActual
+      );
+
+      if (usuarioActual) {
+        // La contraseña actual coincide, puedes proceder a cambiarla
+        usuarioActual.password = this.nuevaContrasena;
+
+        // Actualiza el objeto de usuarios en las preferencias
+        await Preferences.set({
+          key: 'usuarios',
+          value: JSON.stringify(usuarios),
+        });
+
+        const successAlert = await this.alertController.create({
+          header: 'Contraseña Cambiada',
+          message: 'La contraseña se ha cambiado con éxito.',
+          buttons: ['Aceptar'],
+        });
+        await successAlert.present();
+      } else {
+        const errorAlert = await this.alertController.create({
+          header: 'Error',
+          message: 'Nombre de usuario o contraseña incorrectos.',
+          buttons: ['Aceptar'],
+        });
+        await errorAlert.present();
+      }
+    } else {
+      //nose
     }
   }
 }
