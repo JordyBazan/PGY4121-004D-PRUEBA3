@@ -25,7 +25,7 @@ export class RecuperarPasswordPage {
   }
 
   async buscarContrasena() {
-    if (this.nombreUsuarioInput.trim() === '') {
+    if (this.nombreUsuarioInput.trim() === '' || this.rutInput.trim() === '') {
       const alert = await this.alertController.create({
         header: 'Error',
         message: 'Por favor, complete todos los campos correctamente.',
@@ -33,7 +33,7 @@ export class RecuperarPasswordPage {
       });
       await alert.present();
     } else {
-      const usuarioEncontrado = this.usuarios.find(nombreLogin => nombreLogin.nombreLogin === this.nombreUsuarioInput);
+      const usuarioEncontrado = this.usuarios.find(nombreLogin => nombreLogin.nombreLogin === this.nombreUsuarioInput && nombreLogin.rut === this.rutInput);
 
       if (usuarioEncontrado) {
         this.resultadoContrasena = usuarioEncontrado.password;
@@ -48,7 +48,7 @@ export class RecuperarPasswordPage {
       } else {
         const alert = await this.alertController.create({
           header: 'Error',
-          message: 'Nombre de usuario no encontrado',
+          message: 'Nombre de usuario o RUT no encontrado',
           buttons: ['Aceptar']
         });
         await alert.present();
