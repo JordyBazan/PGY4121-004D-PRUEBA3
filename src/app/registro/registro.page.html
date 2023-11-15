@@ -1,0 +1,138 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="warning" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title >registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card-header>
+    <ion-card-title >Registro</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <form [formGroup]="formularioRegistro" (keyup.enter)="guardar()">
+      <ion-item>
+        <ion-label  position="floating">Nombre</ion-label>
+        <ion-input formControlName="nombre"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('nombre')?.invalid && formularioRegistro.get('nombre')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('required')">Este campo es requerido.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('minlength')">El nombre debe tener al menos 3 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('maxlength')">El nombre no debe exceder los 10 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('pattern')">El nombre solo debe contener caracteres alfanuméricos.</ion-label>
+      </div>
+
+
+      <br>
+
+
+      <ion-item>
+        <ion-label  position="floating">Apellido</ion-label>
+        <ion-input formControlName="apellido"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('apellido')?.invalid && formularioRegistro.get('apellido')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('apellido')?.hasError('required')">Este campo es requerido.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('apellido')?.hasError('minlength')">El apellido debe tener al menos 3 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('apellido')?.hasError('maxlength')">El apellido no debe exceder los 15 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('apellido')?.hasError('pattern')">El apellido solo debe contener caracteres alfanuméricos.</ion-label>
+      </div>
+    
+
+      <br>
+
+
+      <ion-item>
+        <ion-label  position="floating">Rut</ion-label>
+        <ion-input formControlName="rut"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('rut')?.invalid && formularioRegistro.get('rut')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('rut')?.hasError('required')">Este campo es requerido.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('rut')?.hasError('invalidRut')">El RUT no tiene el formato válido.</ion-label>
+      </div>
+
+
+      <br>
+
+
+      <ion-item>
+        <ion-label  position="floating">Carrera</ion-label>
+        <ion-input formControlName="carrera"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('carrera')?.invalid && formularioRegistro.get('carrera')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('carrera')?.hasError('required')">Este campo es requerido.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('carrera')?.hasError('minlength')">La carrera debe tener al menos 5 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('carrera')?.hasError('maxlength')">La carrera no debe exceder los 20 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('carrera')?.hasError('pattern')">La carrera solo debe contener caracteres alfanuméricos.</ion-label>
+      </div>
+
+
+      <br>
+
+
+      <ion-item>
+        <ion-label  position="floating">Nombre de usuario</ion-label>
+        <ion-input formControlName="nombreLogin"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('nombreLogin')?.invalid && formularioRegistro.get('nombreLogin')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('required')">Este campo es requerido.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('minlength')">El nombre de usuario debe tener al menos 3 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('maxlength')">El nombre de usuario no debe exceder los 10 caracteres.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('nombre')?.hasError('pattern')">El nombre de usuario solo debe contener caracteres alfanuméricos.</ion-label>
+      </div>
+
+
+      <br>
+
+
+      <ion-item>
+        <ion-label  position="floating">Contraseña</ion-label>
+        <ion-input formControlName="password" type="password" pattern="[0-9]{4}"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('password')?.invalid && formularioRegistro.get('password')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('password')?.hasError('required')">Este campo es requerido.</ion-label>
+        <ion-label *ngIf="formularioRegistro.get('password')?.hasError('pattern')">La contraseña debe ser numérica de 4 dígitos.</ion-label>
+      </div>
+
+
+      <br>
+
+
+      <ion-item>
+        <ion-label  position="floating">Confirmar contraseña</ion-label>
+        <ion-input formControlName="confirmacionPassword" type="password"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="formularioRegistro.get('confirmacionPassword')?.invalid && formularioRegistro.get('confirmacionPassword')?.touched">
+        <ion-label *ngIf="formularioRegistro.get('confirmacionPassword')?.hasError('required')">Este campo es requerido.</ion-label>
+      </div>
+
+
+      <br>
+      
+
+      <ion-button (click)="guardar(); redirectToLogin()" color="warning">Registrarse</ion-button>
+    </form>
+  </ion-card-content>
+  <ion-card> 
+      
+
+    <ion-list>
+      <ion-item>
+        <ion-select (ionChange)="cargarComuna()" placeholder="Seleccione region" [(ngModel)]="regionSeleccionado">
+          <ion-select-option [value]="i.id" *ngFor="let i of regiones">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-item>
+        <ion-select placeholder="Seleccione comuna" [(ngModel)]="comunaSeleccionada">
+          <ion-select-option [value]="i.id" *ngFor="let i of comunas">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    
+  
+</ion-card>
+</ion-content>
